@@ -11,7 +11,6 @@ namespace Elabor8.Bradl.Tests
     {
         public bool Equals(FactCsvField compare1, FactCsvField compare2)
         {
-            // obviously add in your own implementation
             return compare1.FullName == compare2.FullName
                 && compare1.UpvoteCount == compare2.UpvoteCount;
         }
