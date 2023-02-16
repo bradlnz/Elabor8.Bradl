@@ -1,38 +1,30 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Eabor8.Bradl.Models;
 using Elabor8.Bradl.Command;
+using Elabor8.Bradl.Query;
 using Elabor8.Bradl.Repository;
+using Elbor8.Bradl.CommandUtility;
 using MediatR;
 using System.Formats.Asn1;
 using System.Globalization;
 
 namespace Elabor8.Bradl.CommandHandler
 {
-    public class FactCsvCommandHandler : IRequestHandler<FactCsvCommand, byte[]>
+    public class FactCsvCommandHandler : IRequestHandler<FactCsvQuery, byte[]>
     {
-        public async Task<byte[]> Handle(FactCsvCommand request, CancellationToken cancellationToken)
+        private readonly IFactRepository _factRepository;
+        private readonly ICsvCommandHelper _csvCommandHelper;
+        public FactCsvCommandHandler(IFactRepository factRepository, ICsvCommandHelper csvCommandHelper) 
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                NewLine = Environment.NewLine,
-            };
-      
-            var memoryStream = new MemoryStream();
-            using (var writer = new StreamWriter(memoryStream))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                var records = request.Facts.Select(a => new
-                {
-                    User = $"{a.User?.FirstName} {a.User?.LastName}",
-                    TotalVotes = a.Upvotes
-                }).OrderByDescending(f => f.TotalVotes);
-
-                await csv.WriteRecordsAsync(records, cancellationToken);
-
-                await writer.FlushAsync();
-
-                return memoryStream.ToArray();
-            };
+            _factRepository = factRepository ?? throw new ArgumentNullException(nameof(factRepository));
+            _csvCommandHelper = csvCommandHelper ?? throw new ArgumentNullException(nameof(csvCommandHelper));
+        }
+        public async Task<byte[]> Handle(FactCsvQuery request, CancellationToken cancellationToken)
+        {
+            var facts = await _factRepository.ReadCsvDataAsync();
+            var data = await _csvCommandHelper.GenerateCsvAsync(facts, cancellationToken);
+            return data;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Elabor8.Bradl.Command;
 using Microsoft.EntityFrameworkCore;
 using Elabor8.Bradl.Query;
+using Eabor8.Bradl.Models;
 
 namespace Elabor8.Bradl.Repository
 {
@@ -27,17 +28,12 @@ namespace Elabor8.Bradl.Repository
                 Type = command.Type,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Deleted = false,
-                Status = new Status
-                {
-                    SentCount = 0,
-                    Verified = true
-                }
+                Deleted = false
             });
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<Fact[]> ReadAllAsync(FactReadAllQuery query)
+        public async Task<Fact[]> ReadAllAsync()
         {
             return await _dataContext.Facts.ToArrayAsync();
         }
@@ -45,6 +41,16 @@ namespace Elabor8.Bradl.Repository
         public async Task<Fact?> ReadAsync(FactReadQuery command)
         {
             return await _dataContext.Facts.FirstOrDefaultAsync(f => f.Id == command.Id);
+        }
+
+        public async Task<FactCsvField[]> ReadCsvDataAsync()
+        {
+            var facts = await _dataContext.Facts.ToArrayAsync();
+
+            return facts
+                .Select(f => new FactCsvField($"{f.User.FirstName} {f.User.LastName}", f.Upvotes))
+                .OrderByDescending(f => f.UpvoteCount)
+                .ToArray();
         }
     }
 }

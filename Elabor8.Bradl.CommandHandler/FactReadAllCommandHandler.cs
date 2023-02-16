@@ -16,7 +16,7 @@ namespace Elabor8.Bradl.CommandHandler
 
         public Task<Fact[]> Handle(FactReadAllQuery request, CancellationToken cancellationToken)
         {
-            return _factRepository.ReadAllAsync(request);
+            return _factRepository.ReadAllAsync();
         }
     }
 }

@@ -5,8 +5,8 @@
         public Guid Id { get; set; }
         public string? Text { get; set; }
         public string? Type { get; set; }
-        public User? User => new();
-        public Status? Status { get; set; }
+        public User User => new();
+        public Status Status => new();
         public bool Used { get; set; }
         public string? Source { get; set; } = "user";
         public bool Deleted { get; set; }

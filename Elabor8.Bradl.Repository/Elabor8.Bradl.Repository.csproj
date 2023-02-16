@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Eabor8.Bradl.Models\Eabor8.Bradl.Models.csproj" />
     <ProjectReference Include="..\Elabor8.Bradl.Command\Elabor8.Bradl.Command.csproj" />
     <ProjectReference Include="..\Elabor8.Bradl.Entities\Elabor8.Bradl.Entities.csproj" />
     <ProjectReference Include="..\Elabor8.Bradl.Query\Elabor8.Bradl.Query.csproj" />

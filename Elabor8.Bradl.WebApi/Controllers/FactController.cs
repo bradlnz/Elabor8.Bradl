@@ -48,7 +48,7 @@ namespace Elabor8.Bradl.WebApi.Controllers
         [HttpGet("csv")]
         public async Task<FileContentResult> Csv()
         {
-            var csv = await _mediator.Send(new FactCsvCommand(await GetAll()));
+            var csv = await _mediator.Send(new FactCsvQuery());
             return File(csv, "text/csv", $"{DateTime.Now.Ticks}-data.csv");
         }
     }

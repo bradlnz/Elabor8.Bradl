@@ -1,6 +1,7 @@
 using Elabor8.Bradl.CommandHandler;
 using Elabor8.Bradl.Query;
 using Elabor8.Bradl.Repository;
+using Elbor8.Bradl.CommandUtility;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<ICsvCommandHelper, CsvCommandHelper>();
 builder.Services.AddScoped<IFactRepository, FactRepository>();
 
 var asm = Assembly.GetAssembly(typeof(FactCreateCommandHandler));

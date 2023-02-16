@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Elabor8.Bradl.Entities": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52313;http://localhost:52314"
+    }
+  }
+}
